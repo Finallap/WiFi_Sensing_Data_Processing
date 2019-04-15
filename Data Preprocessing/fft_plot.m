@@ -1,0 +1,15 @@
+Fs=128;%%采样频率
+N=512;%%采样点数
+dt=1/Fs;%%时域最小间隔,即时域分辨率
+t=(0:N-1)*dt;%%采样时间长度
+df=Fs/N;%%频域最小间隔，即频域分辨率
+f=(-N/2+1:N/2)*df;
+x=5*sin(2*pi*20*t)+3*sin(2*pi*30*t);
+y=fft(amplitudeA);
+Y=fftshift(y);
+A=abs(Y);
+A=A/(N/2);%%还原真实幅值
+figure(1)
+subplot(121)
+plot(t,amplitudeA)
+xlabel('时间t')
