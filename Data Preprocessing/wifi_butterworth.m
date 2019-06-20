@@ -7,7 +7,6 @@
 % (c) 2019 Fang Yuanrun
 %
 function sequence=wifi_butterworth(sequence,fs,wp,ws)
-%t=0:10/fs:31.08;    %31.08/(10/500)=1554,加上第一个0点的数据，一共1555
 wp=2*wp/fs;         %求通带截止频率
 ws=2*ws/fs;         %求阻带截止频率
 Rp=1;               %通带最大衰减
