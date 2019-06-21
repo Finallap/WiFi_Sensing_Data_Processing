@@ -12,10 +12,10 @@ plot(sequence)
 hold on;
 
 window = zeros(w_length);
-var_array_length = fix((length(sequence)-w_length) / interval)+1;
-var_array = zeros(var_array_length,1);
-threshold_array = zeros(var_array_length,1);
-is_abnormal_array = zeros(var_array_length,1);
+array_length = fix((length(sequence)-w_length) / interval)+1;
+var_array = zeros(array_length,1);
+threshold_array = zeros(array_length,1);
+is_abnormal_array = zeros(array_length,1);
 ismember_result = 0;
 
 %开始进行遍历检测
@@ -29,7 +29,7 @@ for i=1:interval:length(sequence)-w_length
     threshold_array(iterations_num) = threshold;
     
     %判断是否是异常点
-    if( var(window) > threshold_multiple * threshold )
+    if( iterations_num > threshold_multiple && var(window) > threshold_multiple * threshold )
         ismember_result = ismember(1,is_abnormal_array(iterations_num - false_positive_interval:iterations_num));
         
         if (ismember_result)
