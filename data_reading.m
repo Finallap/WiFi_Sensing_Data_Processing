@@ -1,9 +1,16 @@
-clear
-csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_06_01_WiFiRadar\bend_sheng_2.dat');
+%clear
+csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_06_01_WiFiRadar\wave_sheng_2.dat');
 
 %tx=2;
 %rx=3;
 L=length(csi_trace);
+
+%csiA=zeros(L,30);
+%csiB=zeros(L,30);
+%csiC=zeros(L,30);
+%csiA2=zeros(L,30);
+%csiB2=zeros(L,30);
+%csiC2=zeros(L,30);
 
 %amplitude=zeros(tx,rx,30,L);
 amplitudeA=zeros(L,30);
@@ -24,6 +31,15 @@ for m=1:L
     csi_entry=csi_trace{m};
     csi=get_scaled_csi(csi_entry);
     
+    %original csi
+    %csiA(m,:)=csi_entry.csi(1,1,:);
+    %csiB(m,:)=csi_entry.csi(1,2,:);
+    %csiC(m,:)=csi_entry.csi(1,3,:);
+    
+    %csiA2(m,:)=csi_entry.csi(2,1,:);
+    %csiB2(m,:)=csi_entry.csi(2,2,:);
+    %csiC2(m,:)=csi_entry.csi(2,3,:);
+    
     %csi1=db(abs(squeeze(csi)));  %power
     csi1=abs(squeeze(csi));       %amplitude
     amplitudeA(m,:)=csi1(1,1,:);
@@ -43,7 +59,6 @@ for m=1:L
     phaseB2(m,:)=csi2(2,2,:);
     phaseC2(m,:)=csi2(2,3,:);
 end
-
 
 rssiA=zeros(L,1);
 rssiB=zeros(L,1);
