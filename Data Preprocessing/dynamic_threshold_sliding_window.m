@@ -4,7 +4,7 @@ alpha = 0.1;%阈值更新权重系数
 false_positive_interval = 4;%至少间隔多少个滑窗在进行报警
 threshold_multiple = 3;%阈值倍数
 
-sequence = first_pca;
+sequence = second_pca;
 sequence = medfilt1(sequence,40);%中值滤波
 
 threshold = var(sequence(1:2 * w_length -1));%计算初始阈值

@@ -1,5 +1,5 @@
 %clear
-csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_06_01_WiFiRadar\wave_sheng_2.dat');
+csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_04_28\sample-2-6-5.dat');
 
 %tx=2;
 %rx=3;
