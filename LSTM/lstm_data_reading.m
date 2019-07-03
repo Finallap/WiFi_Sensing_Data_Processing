@@ -23,6 +23,9 @@ for i=1:fileNums
     csi_label{end+1,1} = label;
 end
 
+%记得所有数据写完了，把标签转换成categorical
+%csi_label = categorical(csi_label);
+
 function fileNames = traversing_folder(dirPath,fileExtension)
 fileFolder=fullfile(dirPath);
 dirOutput=dir(fullfile(fileFolder,fileExtension));
