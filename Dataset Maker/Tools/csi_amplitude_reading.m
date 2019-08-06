@@ -6,19 +6,21 @@ function amplitude = csi_amplitude_reading(filedirPath)
     for m=1:L
         csi_entry=csi_trace{m};
         csi=get_scaled_csi(csi_entry);
-
         csi1=abs(squeeze(csi));       %amplitude
-        tmp=csi1(1,1,:);
-        amplitude(1:30,m)=tmp(1:30);
-        tmp=csi1(1,2,:);
-        amplitude(31:60,m)=tmp(1:30);
-        tmp=csi1(1,3,:);
-        amplitude(61:90,m)=tmp(1:30);
-        tmp=csi1(2,1,:);
-        amplitude(91:120,m)=tmp(1:30);
-        tmp=csi1(2,2,:);
-        amplitude(121:150,m)=tmp(1:30);
-        tmp=csi1(2,3,:);
-        amplitude(151:180,m)=tmp(1:30);
+        
+        amplitudeA(m,:)=csi1(1,1,:);
+        amplitudeB(m,:)=csi1(1,2,:);
+        amplitudeC(m,:)=csi1(1,3,:);
+    
+        amplitudeA2(m,:)=csi1(2,1,:);
+        amplitudeB2(m,:)=csi1(2,2,:);
+        amplitudeC2(m,:)=csi1(2,3,:);
+        
+        amplitude(1:30,m)= amplitudeA(m,:);
+        amplitude(31:60,m)= amplitudeA2(m,:);
+        amplitude(61:90,m)=amplitudeB(m,:);
+        amplitude(91:120,m)=amplitudeB2(m,:);
+        amplitude(121:150,m)=amplitudeC(m,:);
+        amplitude(151:180,m)=amplitudeC2(m,:);
     end
 end
