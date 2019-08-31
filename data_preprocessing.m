@@ -1,8 +1,8 @@
 fs=100;%采样频率
-wp=5;         %通带截止频率
-ws=8;         %阻带截止频率
+wp=1.5;         %通带截止频率
+ws=4;         %阻带截止频率
 rp=1;               %通带最大衰减
-as=60;              %阻带最小衰减
+as=80;              %阻带最小衰减
 
 %进行巴特沃斯滤波
 amplitude = wifi_butterworth(amplitudeB2,fs,wp,ws,rp,as);
