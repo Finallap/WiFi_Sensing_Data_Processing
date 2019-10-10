@@ -1,5 +1,5 @@
 %clear
-csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_04_28\sample-2-6-5.dat');
+csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_07_18\实验室\throw_zhou_1.dat');
 
 %tx=2;
 %rx=3;
@@ -19,6 +19,9 @@ amplitudeC=zeros(L,30);
 amplitudeA2=zeros(L,30);
 amplitudeB2=zeros(L,30);
 amplitudeC2=zeros(L,30);
+%amplitudeA3=zeros(L,30);
+%amplitudeB3=zeros(L,30);
+%amplitudeC3=zeros(L,30);
 
 phaseA=zeros(L,30);
 phaseB=zeros(L,30);
@@ -49,6 +52,10 @@ for m=1:L
     amplitudeA2(m,:)=csi1(2,1,:);
     amplitudeB2(m,:)=csi1(2,2,:);
     amplitudeC2(m,:)=csi1(2,3,:);
+    
+    %amplitudeA3(m,:)=csi1(3,1,:);
+    %amplitudeB3(m,:)=csi1(3,2,:);
+    %amplitudeC3(m,:)=csi1(3,3,:);
     
     csi2=angle(squeeze(csi));    %phase
     phaseA(m,:)=csi2(1,1,:);

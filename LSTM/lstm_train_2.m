@@ -1,7 +1,7 @@
 Kfold = 10;%设置交叉检验折数
 indices = crossvalind('Kfold',csi_label,Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
-saveDir = 'G:\无源感知研究\实验结果\2019_08_04_实验室\';
+saveDir = 'G:\无源感知研究\实验结果\2019_10_10_实验室（纯相位）（双层）';
 
 for i = 1:Kfold
     %划分此次的训练集和测试集
@@ -71,7 +71,7 @@ function net = trainLSTM(x_train,y_train,x_test,y_test)
         softmaxLayer
         classificationLayer];
 
-    maxEpochs = 360;
+    maxEpochs = 250;
     miniBatchSize = 32;
 
     options = trainingOptions('adam', ...
@@ -85,7 +85,7 @@ function net = trainLSTM(x_train,y_train,x_test,y_test)
         'ValidationFrequency',5, ...
         'LearnRateSchedule', 'piecewise', ...
     	'LearnRateDropFactor', 0.8, ...
-        'LearnRateDropPeriod', 20, ...
+        'LearnRateDropPeriod', 25, ...
         'Plots','training-progress');
 
     net = trainNetwork(x_train,y_train,layers,options);

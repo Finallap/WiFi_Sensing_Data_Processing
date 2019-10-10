@@ -26,7 +26,7 @@ layers = [ ...
     softmaxLayer
     classificationLayer];
 
-maxEpochs = 750;
+maxEpochs = 350;
 miniBatchSize = 32;
 
 options = trainingOptions('adam', ...

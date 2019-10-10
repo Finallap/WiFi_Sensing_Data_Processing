@@ -2,6 +2,13 @@ function amplitude = csi_amplitude_reading(filedirPath)
     csi_trace=read_bf_file(filedirPath);
     L=length(csi_trace);
     amplitude=zeros(180,L);
+    
+    amplitudeA=zeros(L,30);
+    amplitudeB=zeros(L,30);
+    amplitudeC=zeros(L,30);
+    amplitudeA2=zeros(L,30);
+    amplitudeB2=zeros(L,30);
+    amplitudeC2=zeros(L,30);
 
     for m=1:L
         csi_entry=csi_trace{m};
