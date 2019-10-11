@@ -1,5 +1,5 @@
 %clear;
-load('G:\无源感知研究\数据采集\2019_07_18\实验室（纯相位）.mat');
+load('G:\无源感知研究\数据采集\2019_07_18\实验室（幅值相位混合）.mat');
 sample_num = size(csi_train,1);
 
 for i=1:sample_num

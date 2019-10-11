@@ -13,14 +13,15 @@ person_label_name = 'chen';
 for i=1:length(sequence_label)
     start = sequence_label(i,1);
     the_end = sequence_label(i,2);
-    %selection_sequence = amplitude(start:the_end,:);
-    selection_sequence = phase(start:the_end,:);
-    selection_sequence = unwrap(selection_sequence);%相位解缠
+    %selection_amplitude_sequence = amplitude(start:the_end,:);%选取幅值
+    selection_phase_sequence = phase(start:the_end,:);%选取相位
+    selection_phase_sequence = unwrap(selection_phase_sequence);%相位解缠
     
     csi_label_size = size(csi_label);
     csi_label_length = csi_label_size(1);
     
-    csi_train{end+1,1} = selection_sequence;
+    %csi_train{end+1,1} = selection_amplitude_sequence;%添加幅值信息
+    csi_train{end+1,1} = selection_phase_sequence;%添加相位信息
     csi_label{csi_label_length + 1,1} = label_name;
     csi_label{csi_label_length + 1,2} = person_label_name;
 end

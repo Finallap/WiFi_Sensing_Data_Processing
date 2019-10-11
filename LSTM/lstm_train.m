@@ -12,7 +12,7 @@ end
 x_train = x_train(idx);
 y_train = y_train(idx);
 
-inputSize = 180;
+inputSize = 360;
 numHiddenUnits = 128;
 numClasses = 6;
 
