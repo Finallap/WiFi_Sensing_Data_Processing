@@ -92,6 +92,50 @@ for m=1:L
     rssiC(m,1)=csi_entry.rssi_c;
 end
 
+
+ampA=zeros(count_ntx3,30);
+ampB=zeros(count_ntx3,30);
+ampC=zeros(count_ntx3,30);
+ampA2=zeros(count_ntx3,30);
+ampB2=zeros(count_ntx3,30);
+ampC2=zeros(count_ntx3,30);
+ampA3=zeros(count_ntx3,30);
+ampB3=zeros(count_ntx3,30);
+ampC3=zeros(count_ntx3,30);
+timestamp_seq=zeros(count_ntx3,1);
+count_ntx3_i=1;
+
+for m=1:L
+    csi_entry=csi_trace{m};
+    csi=get_scaled_csi(csi_entry);
+    
+    if csi_entry.Ntx==3
+        csi1=abs(squeeze(csi));       %amplitude
+        ampA(count_ntx3_i,:)=csi1(1,1,:);
+        ampB(count_ntx3_i,:)=csi1(1,2,:);
+        ampC(count_ntx3_i,:)=csi1(1,3,:);
+    
+        ampA2(count_ntx3_i,:)=csi1(2,1,:);
+        ampB2(count_ntx3_i,:)=csi1(2,2,:);
+        ampC2(count_ntx3_i,:)=csi1(2,3,:);
+    
+        ampA3(count_ntx3_i,:)=csi1(3,1,:);
+        ampB3(count_ntx3_i,:)=csi1(3,2,:);
+        ampC3(count_ntx3_i,:)=csi1(3,3,:);
+        
+        timestamp_seq(count_ntx3_i)=csi_entry.timestamp_low;
+        
+        count_ntx3_i = count_ntx3_i+1;
+    end
+end
+
 max_gap = max(strlength(regexp(ntx3_seq_string,'0*','match')));
-plot(ntx3_seq)
-title("会议室\bend_chen_2")
+%plot(ntx3_seq)
+%title("会议室\bend_chen_2")
+
+timestamp_start = timestamp_seq(1);
+timestamp_end = timestamp_seq(end);
+gap=diff(timestamp_seq);
+interval = (csi_trace{L}.timestamp_low-csi_trace{1}.timestamp_low)/L;
+xq = (timestamp_start:interval:timestamp_end)';
+V = interp1(timestamp_seq, ampA, xq);
