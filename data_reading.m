@@ -1,9 +1,14 @@
 %clear
-csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_07_18\实验室\throw_zhou_1.dat');
+csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_07_18\会议室\bend_chen_2.dat');
 
 %tx=2;
 %rx=3;
 L=length(csi_trace);
+count_ntx1 = 0;
+count_ntx2 = 0;
+count_ntx3 = 0;
+ntx3_seq = zeros(L,1);
+ntx3_seq_string = '';
 
 %csiA=zeros(L,30);
 %csiB=zeros(L,30);
@@ -30,9 +35,25 @@ phaseA2=zeros(L,30);
 phaseB2=zeros(L,30);
 phaseC2=zeros(L,30);
 
+rssiA=zeros(L,1);
+rssiB=zeros(L,1);
+rssiC=zeros(L,1);
+
 for m=1:L
     csi_entry=csi_trace{m};
     csi=get_scaled_csi(csi_entry);
+    
+    if csi_entry.Ntx==1
+        count_ntx1 = count_ntx1+1;
+        ntx3_seq_string =strcat(ntx3_seq_string,'0');
+    elseif csi_entry.Ntx==2
+        count_ntx2 = count_ntx2+1;
+        ntx3_seq_string =strcat(ntx3_seq_string,'0');
+    elseif csi_entry.Ntx==3
+        count_ntx3 = count_ntx3+1;
+        ntx3_seq(m) = 1;
+        ntx3_seq_string =strcat(ntx3_seq_string,'1');
+    end
     
     %original csi
     %csiA(m,:)=csi_entry.csi(1,1,:);
@@ -65,14 +86,12 @@ for m=1:L
     phaseA2(m,:)=csi2(2,1,:);
     phaseB2(m,:)=csi2(2,2,:);
     phaseC2(m,:)=csi2(2,3,:);
-end
-
-rssiA=zeros(L,1);
-rssiB=zeros(L,1);
-rssiC=zeros(L,1);
-for m=1:L
-    csi_entry=csi_trace{m};
+    
     rssiA(m,1)=csi_entry.rssi_a;
     rssiB(m,1)=csi_entry.rssi_b;
     rssiC(m,1)=csi_entry.rssi_c;
 end
+
+max_gap = max(strlength(regexp(ntx3_seq_string,'0*','match')));
+plot(ntx3_seq)
+title("会议室\bend_chen_2")
