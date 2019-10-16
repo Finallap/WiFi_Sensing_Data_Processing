@@ -12,13 +12,13 @@ end
 x_train = x_train(idx);
 y_train = y_train(idx);
 
-inputSize = 360;
+inputSize = 180;
 numHiddenUnits = 128;
 numClasses = 6;
 
 layers = [ ...
     sequenceInputLayer(inputSize)
-    bilstmLayer(100,'OutputMode','sequence')
+    bilstmLayer(numHiddenUnits,'OutputMode','sequence')
     dropoutLayer(0.2)
     bilstmLayer(numHiddenUnits,'OutputMode','last')
     dropoutLayer(0.2)
@@ -26,7 +26,7 @@ layers = [ ...
     softmaxLayer
     classificationLayer];
 
-maxEpochs = 350;
+maxEpochs = 300;
 miniBatchSize = 32;
 
 options = trainingOptions('adam', ...
