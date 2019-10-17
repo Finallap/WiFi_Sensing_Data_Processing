@@ -12,7 +12,8 @@ end
 x_train = x_train(idx);
 y_train = y_train(idx);
 
-inputSize = 180;
+train_data_size = size(x_train{1,1});
+inputSize = train_data_size(1);
 numHiddenUnits = 128;
 numClasses = 6;
 
