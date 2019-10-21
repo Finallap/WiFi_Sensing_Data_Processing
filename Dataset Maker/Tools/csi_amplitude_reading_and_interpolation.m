@@ -1,4 +1,4 @@
-function amplitude = csi_amplitude_reading_and_interpolation(filedirPath)
+function amplitude = csi_amplitude_reading_and_interpolation(filedirPath,start,the_end)
     csi_trace=read_bf_file(filedirPath);
     L=length(csi_trace);
     count_ntx3 = 0;
@@ -57,11 +57,16 @@ function amplitude = csi_amplitude_reading_and_interpolation(filedirPath)
             count_ntx3_i = count_ntx3_i+1;
         end
     end
+
+    %sep_timestamp_start = timestamp_seq(1);
+    %sep_timestamp_end = timestamp_seq(end);
     
-    timestamp_start = timestamp_seq(1);
-    timestamp_end = timestamp_seq(end);
+    %以上部分将整段的序列进行了读取，接下来选取需要的部分进行插值
+    part_timestamp_start=csi_trace{start}.timestamp_low;
+    part_timestamp_end=csi_trace{the_end}.timestamp_low;
+    
     interval = (csi_trace{L}.timestamp_low-csi_trace{1}.timestamp_low)/(L-1);
-    interpolation_timestamp = (timestamp_start:interval:timestamp_end)';
+    interpolation_timestamp = (part_timestamp_start:interval:part_timestamp_end)';
     amplitude = interp1(timestamp_seq, amplitude', interpolation_timestamp,'linear');
     amplitude = amplitude';
 end
