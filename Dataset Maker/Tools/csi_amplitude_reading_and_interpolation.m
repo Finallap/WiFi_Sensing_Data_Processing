@@ -3,12 +3,16 @@ function amplitude = csi_amplitude_reading_and_interpolation(filedirPath,start,t
     L=length(csi_trace);
     count_ntx3 = 0;
 
+    original_timestamp_seq = zeros(L,1);
     for m=1:L
         csi_entry=csi_trace{m};
         if csi_entry.Ntx==3
             count_ntx3 = count_ntx3+1;
         end
+        original_timestamp_seq(m)=csi_entry.timestamp_low;
     end
+    
+    original_timestamp_seq = unwrap(original_timestamp_seq,2^32);%原始的时间线进行时间戳解缠
     
     amplitudeA=zeros(count_ntx3,30);
     amplitudeB=zeros(count_ntx3,30);
@@ -21,7 +25,7 @@ function amplitude = csi_amplitude_reading_and_interpolation(filedirPath,start,t
     amplitudeC3=zeros(count_ntx3,30);
     
     amplitude=zeros(270,count_ntx3);
-    timestamp_seq=zeros(count_ntx3,1);
+    selected_timestamp_seq=zeros(count_ntx3,1);
     count_ntx3_i=1;
     
     for m=1:L
@@ -52,7 +56,7 @@ function amplitude = csi_amplitude_reading_and_interpolation(filedirPath,start,t
             amplitude(211:240,count_ntx3_i)=amplitudeC2(count_ntx3_i,:);
             amplitude(241:270,count_ntx3_i)=amplitudeC3(count_ntx3_i,:);
 
-            timestamp_seq(count_ntx3_i)=csi_entry.timestamp_low;
+            selected_timestamp_seq(count_ntx3_i)=csi_entry.timestamp_low;
 
             count_ntx3_i = count_ntx3_i+1;
         end
@@ -61,12 +65,16 @@ function amplitude = csi_amplitude_reading_and_interpolation(filedirPath,start,t
     %sep_timestamp_start = timestamp_seq(1);
     %sep_timestamp_end = timestamp_seq(end);
     
+    selected_timestamp_seq = unwrap(selected_timestamp_seq,2^32);%选取的时间线进行时间戳解缠
+    
     %以上部分将整段的序列进行了读取，接下来选取需要的部分进行插值
-    part_timestamp_start=csi_trace{start}.timestamp_low;
-    part_timestamp_end=csi_trace{the_end}.timestamp_low;
+    %part_timestamp_start=csi_trace{start}.timestamp_low;
+    %part_timestamp_end=csi_trace{the_end}.timestamp_low;
+    part_timestamp_start = original_timestamp_seq(start);
+    part_timestamp_end = original_timestamp_seq(the_end);
     
     interval = (csi_trace{L}.timestamp_low-csi_trace{1}.timestamp_low)/(L-1);
     interpolation_timestamp = (part_timestamp_start:interval:part_timestamp_end)';
-    amplitude = interp1(timestamp_seq, amplitude', interpolation_timestamp,'linear');
+    amplitude = interp1(selected_timestamp_seq, amplitude', interpolation_timestamp,'linear');
     amplitude = amplitude';
 end
