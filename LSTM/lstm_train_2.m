@@ -1,7 +1,7 @@
 Kfold = 10;%设置交叉检验折数
 indices = crossvalind('Kfold',csi_label,Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
-saveDir = 'G:\无源感知研究\实验结果\2019_10_16_实验室（双层）（hampel滤波）\';
+saveDir = 'G:\无源感知研究\实验结果\2019_10_22_会议室（3t3r1)（双层）（归一化）\';
 
 for i = 1:Kfold
     %划分此次的训练集和测试集
@@ -44,35 +44,17 @@ for i = 1:Kfold
     saveas(gcf,strcat(confusionchartSaveDir,'.jpg'));
 end
 
-function [x_train,y_train] = sequenceSort(x_train,y_train)
-    numObservations = numel(x_train);
-    for i=1:numObservations
-        sequence = x_train{i};
-        sequenceLengths(i) = size(sequence,2);
-    end
-
-    [~,idx] = sort(sequenceLengths);
-    x_train = x_train(idx);
-    y_train = y_train(idx);
-end
-
 function net = trainLSTM(x_train,y_train,x_test,y_test)
     train_data_size = size(x_train{1,1});
     inputSize = train_data_size(1);
     numHiddenUnits = 128;
     numClasses = 6;
+	networkType = 'DoubleBiLSTM';
 
-    layers = [ ...
-        sequenceInputLayer(inputSize)
-        bilstmLayer(numHiddenUnits,'OutputMode','sequence')
-        dropoutLayer(0.2)
-        bilstmLayer(numHiddenUnits,'OutputMode','last')
-        dropoutLayer(0.2)
-        fullyConnectedLayer(numClasses)
-        softmaxLayer
-        classificationLayer];
+    %使用LSTMMaker函数建立训练网络
+    layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses);
 
-    maxEpochs = 300;
+    maxEpochs = 40;
     miniBatchSize = 32;
 
     options = trainingOptions('adam', ...
