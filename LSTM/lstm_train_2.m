@@ -1,7 +1,14 @@
+%训练参数设置
+saveDir = 'G:\无源感知研究\实验结果\2019_10_22_会议室（3t3r1)（双层）（不归一化）\';%结果保存路径
+inputSize = 270;%输入维度
+numHiddenUnits = 128;%隐层数量
+numClasses = 6;%输入标签种类数量
+networkType = 'DoubleBiLSTM';%使用的网络类型
+maxEpochs = 350;%最大迭代次数
+
 Kfold = 10;%设置交叉检验折数
 indices = crossvalind('Kfold',csi_label,Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
-saveDir = 'G:\无源感知研究\实验结果\2019_10_22_会议室（3t3r1)（双层）（归一化）\';
 
 for i = 1:Kfold
     %划分此次的训练集和测试集
@@ -15,8 +22,12 @@ for i = 1:Kfold
     %对训练集进行排序
     [x_train,y_train] = sequenceSort(x_train,y_train);
     
+    %使用LSTMMaker函数建立训练网络
+    
+    layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses);
+    
     %训练网络
-    net = trainLSTM(x_train,y_train,x_test,y_test);
+    net = trainLSTM(x_train,y_train,x_test,y_test,layers,maxEpochs);
     
     %时间戳
     nowtime = fix(clock);
@@ -44,32 +55,4 @@ for i = 1:Kfold
     saveas(gcf,strcat(confusionchartSaveDir,'.jpg'));
 end
 
-function net = trainLSTM(x_train,y_train,x_test,y_test)
-    train_data_size = size(x_train{1,1});
-    inputSize = train_data_size(1);
-    numHiddenUnits = 128;
-    numClasses = 6;
-	networkType = 'DoubleBiLSTM';
-
-    %使用LSTMMaker函数建立训练网络
-    layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses);
-
-    maxEpochs = 40;
-    miniBatchSize = 32;
-
-    options = trainingOptions('adam', ...
-        'ExecutionEnvironment','auto', ...
-        'GradientThreshold',1, ...
-        'MaxEpochs',maxEpochs, ...
-        'MiniBatchSize',miniBatchSize', ...
-        'SequenceLength','longest', ...
-        'Verbose',0, ...
-        'ValidationData',{x_test,y_test}, ...
-        'ValidationFrequency',5, ...
-        'LearnRateSchedule', 'piecewise', ...
-    	'LearnRateDropFactor', 0.8, ...
-        'LearnRateDropPeriod', 25, ...
-        'Plots','training-progress');
-
-    net = trainNetwork(x_train,y_train,layers,options);
-end
+average_acc = mean(acc_count)
