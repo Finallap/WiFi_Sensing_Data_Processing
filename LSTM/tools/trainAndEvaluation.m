@@ -1,16 +1,8 @@
-%训练参数设置
-saveDir = 'G:\无源感知研究\实验结果\2019_10_22_会议室（3t3r1)（双层）（不归一化）\';%结果保存路径
-inputSize = 270;%输入维度
-numHiddenUnits = 128;%隐层数量
-numClasses = 6;%输入标签种类数量
-networkType = 'DoubleBiLSTM';%使用的网络类型
-maxEpochs = 350;%最大迭代次数
-
-Kfold = 10;%设置交叉检验折数
-indices = crossvalind('Kfold',csi_label,Kfold);%划分训练集和测试集
+function [acc_count] = trainAndEvaluation(job_options)
+indices = crossvalind('Kfold',csi_label,job_options.Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
 
-for i = 1:Kfold
+for i = 1:job_options.Kfold
     %划分此次的训练集和测试集
     test = (indices == i); 
     train = ~test;
@@ -23,22 +15,22 @@ for i = 1:Kfold
     [x_train,y_train] = sequenceSort(x_train,y_train);
     
     %使用LSTMMaker函数建立训练网络
-    layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses);
+    layers = LSTMMaker(job_options.networkType, job_options.inputSize, job_options.numHiddenUnits, job_options.numClasses);
     
     %训练网络
-    net = trainLSTM(x_train,y_train,x_test,y_test,layers,maxEpochs);
+    net = trainLSTM(x_train,y_train,x_test,y_test,layers,job_options.maxEpochs);
     
     %时间戳
     nowtime = fix(clock);
     nowtimestr = sprintf('%d-%d-%d-%d-%d-%d',nowtime(1),nowtime(2),nowtime(3),nowtime(4),nowtime(5),nowtime(6));
     
     %保存网络
-    networkSaveDir = sprintf('%s%s%d%s%s',saveDir,'network(',i,')-',nowtimestr);
+    networkSaveDir = sprintf('%s%s%d%s%s',job_options.result_save_dir,'network(',i,')-',nowtimestr);
     save(networkSaveDir,'net');
     
     %预测并计算准确率
     y_Pred = classify(net,x_test, 'SequenceLength','longest');
-    acc = sum(y_Pred == y_test)./numel(y_test)
+    acc = sum(y_Pred == y_test)./numel(y_test);
     acc_count(i) = acc;
     
     %绘制混淆矩阵
@@ -49,9 +41,7 @@ for i = 1:Kfold
     cm.RowSummary = 'row-normalized';
     
     %保存混淆矩阵
-    confusionchartSaveDir = sprintf('%s%s%d%s%s',saveDir,'confusionchart(',i,')-',nowtimestr);
+    confusionchartSaveDir = sprintf('%s%s%d%s%s',job_options.result_save_dir,'confusionchart(',i,')-',nowtimestr);
     saveas(gcf,confusionchartSaveDir);
     saveas(gcf,strcat(confusionchartSaveDir,'.jpg'));
 end
-
-average_acc = mean(acc_count)
