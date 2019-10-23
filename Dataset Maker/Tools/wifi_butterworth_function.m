@@ -1,8 +1,8 @@
 function sequence=wifi_butterworth_function(sequence)
     sequence = sequence';
     fs=100;%采样频率
-    wp=3;         %通带截止频率
-    ws=8;         %阻带截止频率
+    wp=2;         %通带截止频率
+    ws=10;         %阻带截止频率
     rp=1;               %通带最大衰减
     as=60;              %阻带最小衰减
     wp=2*wp/fs;         %求通带截止频率

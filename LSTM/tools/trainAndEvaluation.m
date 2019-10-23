@@ -1,4 +1,4 @@
-function [acc_count] = trainAndEvaluation(job_options)
+function [acc_count] = trainAndEvaluation(csi_train,csi_label,job_options)
 indices = crossvalind('Kfold',csi_label,job_options.Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
 
