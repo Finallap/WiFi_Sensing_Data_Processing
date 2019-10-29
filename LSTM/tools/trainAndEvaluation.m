@@ -1,8 +1,15 @@
-function [acc_count] = trainAndEvaluation(csi_train,csi_label,job_options)
+function [acc_count,precision_count,recall_count,f1_count,t_count] = trainAndEvaluation(csi_train,csi_label,job_options)
 indices = crossvalind('Kfold',csi_label,job_options.Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
 
+%预分配结果存储数组
+acc_count = zeros(job_options.Kfold,1);
+precision_count = zeros(job_options.Kfold,1);
+recall_count = zeros(job_options.Kfold,1);
+f1_count = zeros(job_options.Kfold,1);
+
 for i = 1:job_options.Kfold
+    tic;%预处理开始计时
     %划分此次的训练集和测试集
     test = (indices == i); 
     train = ~test;
@@ -13,12 +20,15 @@ for i = 1:job_options.Kfold
     
     %对训练集进行排序
     [x_train,y_train] = sequenceSort(x_train,y_train);
+    t_count.preprocessed(i) = toc;%预处理结束计时
     
     %使用LSTMMaker函数建立训练网络
+    tic;%训练开始计时
     layers = LSTMMaker(job_options.networkType, job_options.inputSize, job_options.numHiddenUnits, job_options.numClasses);
     
     %训练网络
     net = trainLSTM(x_train,y_train,x_test,y_test,layers,job_options.maxEpochs);
+    t_count.training(i) = toc;%训练结束计时
     
     %时间戳
     nowtime = fix(clock);
@@ -29,9 +39,14 @@ for i = 1:job_options.Kfold
     save(networkSaveDir,'net');
     
     %预测并计算准确率
+    tic;%预测开始计时
     y_Pred = classify(net,x_test, 'SequenceLength','longest');
-    acc = sum(y_Pred == y_test)./numel(y_test);
+    [acc,precision,recall,f1]=indicator_calculation(y_Pred,y_test);
     acc_count(i) = acc;
+    precision_count(i) = precision;
+    recall_count(i) = recall;
+    f1_count(i) = f1;
+    t_count.prediction(i) = toc;%预测结束计时
     
     %绘制混淆矩阵
     figure('Units','normalized','Position',[0.2 0.2 0.4 0.4]);

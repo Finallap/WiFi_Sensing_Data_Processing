@@ -1,6 +1,6 @@
 function [Accuracy,Precision,Recall,F_score]=indicator_calculation(output,target)
     %% accuracy
-    Accuracy = sum(output == target)./numel(y_test);
+    Accuracy = sum(output == target)./numel(target);
 
     %% matrice confusion
     [confMat,~] = confusionmat(output,target);
