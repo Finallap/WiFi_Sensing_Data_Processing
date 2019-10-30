@@ -17,6 +17,23 @@ function layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses)
                     fullyConnectedLayer(numClasses)
                     softmaxLayer
                     classificationLayer];
+        case 'DoubleLSTM'
+            layers = [ ...
+                    sequenceInputLayer(inputSize)
+                    lstmLayer(numHiddenUnits,'OutputMode','sequence')
+                    dropoutLayer(0.2)
+                    lstmLayer(numHiddenUnits,'OutputMode','last')
+                    dropoutLayer(0.2)
+                    fullyConnectedLayer(numClasses)
+                    softmaxLayer
+                    classificationLayer];
+        case 'SingleLSTM'
+            layers = [ ...
+                    sequenceInputLayer(inputSize)
+                    lstmLayer(numHiddenUnits,'OutputMode','last')
+                    fullyConnectedLayer(numClasses)
+                    softmaxLayer
+                    classificationLayer];
         otherwise
             layers = [ ...
                     sequenceInputLayer(inputSize)
