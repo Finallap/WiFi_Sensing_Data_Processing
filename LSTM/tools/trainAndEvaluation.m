@@ -41,7 +41,7 @@ for i = 1:job_options.Kfold
     %预测并计算准确率
     tic;%预测开始计时
     y_Pred = classify(net,x_test, 'SequenceLength','longest');
-    [acc,precision,recall,f1]=indicator_calculation(y_Pred,y_test);
+    [acc,precision,recall,f1]=indicator_calculation(y_test,y_Pred);
     acc_count(i) = acc;
     precision_count(i) = precision;
     recall_count(i) = recall;

@@ -1,7 +1,7 @@
 Kfold = 10;%设置交叉检验折数
 indices = crossvalind('Kfold',csi_label,Kfold);%划分训练集和测试集
 %[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);
-saveDir = 'G:\无源感知研究\实验结果\2019_10_31_迁移学习\实验室 to 会议室 （Single200）2\';
+saveDir = 'G:\无源感知研究\实验结果\2019_10_31_迁移学习\实验室 to 会议室 （Single200）4\';
 
 % 初始化结果（使用cell结构，与输出同尺寸，每个元素对应Excel一个格子）
 result_data = cell(2,9);
@@ -43,7 +43,7 @@ for i = 1:Kfold
     
     %预测并计算准确率
     y_Pred = classify(net1,x_test, 'SequenceLength','longest');
-    [after_acc,after_precision,after_recall,after_f1]=indicator_calculation(y_Pred,y_test);
+    [after_acc,after_precision,after_recall,after_f1]=indicator_calculation(y_test,y_Pred);
     %acc = sum(y_Pred == y_test)./numel(y_test)
     after_acc_count(i) = after_acc;
     after_precision_count(i) = after_precision;
