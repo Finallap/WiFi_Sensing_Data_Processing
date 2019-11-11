@@ -36,7 +36,7 @@ net = trainNetwork(x_train,y_train,layers,options);
 y_Pred = classify(net,x_test, ...
     'SequenceLength','longest');
 
-acc = sum(y_Pred == y_test)./numel(y_test)
+[acc,precision,recall,f1]=indicator_calculation(y_test,y_Pred)
  
 figure('Units','normalized','Position',[0.2 0.2 0.4 0.4]);
 cm = confusionchart(y_test,y_Pred);
