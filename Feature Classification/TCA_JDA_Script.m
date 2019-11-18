@@ -1,4 +1,11 @@
-[acc,acc_ite] = JDA(lab_train,lab_label,meeting_train,meeting_label,options)
+options.kernel_type='rbf'; options.dim=540; options.lambda=1; options.gamma=1;
+
+[acc,acc_ite] = JDA(lab_train,lab_label,meeting_train,meeting_label,options);
+[acc,G,Cls] = GFK(lab_train,lab_label,meeting_train,meeting_label,options.dim);
+[Acc,acc_iter,Beta,Yt_pred] = MEDA(lab_train,lab_label,meeting_train,meeting_label,options);
+[Acc,acc_ite,~] = BDA(lab_train,lab_label,meeting_train,meeting_label,options);
+[acc,acc_list,A] = MyTJM(lab_train,lab_label,meeting_train,meeting_label,options);
+[acc,y_pred,time_pass] = CORAL_SVM(lab_train,lab_label,meeting_train,meeting_label);
 
 [meeting_train_new,lab_train_new,A] = TCA(meeting_train,lab_train,options);
 lab_new = [lab_train_new,lab_label];
