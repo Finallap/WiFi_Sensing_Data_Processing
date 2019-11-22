@@ -4,9 +4,8 @@ function layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses)
             layers = [ ...
                     sequenceInputLayer(inputSize)
                     bilstmLayer(numHiddenUnits,'OutputMode','sequence')
-                    dropoutLayer(0.2)
+                    dropoutLayer(0.5)
                     bilstmLayer(numHiddenUnits,'OutputMode','last')
-                    dropoutLayer(0.2)
                     fullyConnectedLayer(numClasses)
                     softmaxLayer
                     classificationLayer];
@@ -21,9 +20,8 @@ function layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses)
             layers = [ ...
                     sequenceInputLayer(inputSize)
                     lstmLayer(numHiddenUnits,'OutputMode','sequence')
-                    dropoutLayer(0.2)
+                    dropoutLayer(0.5)
                     lstmLayer(numHiddenUnits,'OutputMode','last')
-                    dropoutLayer(0.2)
                     fullyConnectedLayer(numClasses)
                     softmaxLayer
                     classificationLayer];

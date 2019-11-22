@@ -1,9 +1,9 @@
 function [amplitude,phase,rssi] = csi_reading_1t3r(filedirPath)
     csi_trace=read_bf_file(filedirPath);
     L=length(csi_trace);
-    amplitude=zeros(90,L);
-    phase=zeros(90,L);
-    rssi=zeros(3,L);
+    amplitude=zeros(L,90);
+    phase=zeros(L,90);
+    rssi=zeros(L,3);
     
     amplitudeA=zeros(L,30);
     amplitudeB=zeros(L,30);
@@ -26,25 +26,31 @@ function [amplitude,phase,rssi] = csi_reading_1t3r(filedirPath)
         amplitudeB(m,:)=csi1(2,:);
         amplitudeC(m,:)=csi1(3,:);
 
-        amplitude(1:30,m)= amplitudeA(m,:);
-        amplitude(31:60,m)= amplitudeB(m,:);
-        amplitude(61:90,m)=amplitudeC(m,:);
+        amplitude(m,1:30)= amplitudeA(m,:);
+        amplitude(m,31:60)= amplitudeB(m,:);
+        amplitude(m,61:90)=amplitudeC(m,:);
         
         csi2=angle(squeeze(csi));    %phase
-        phaseA(m,:)=csi2(1,:);
-        phaseB(m,:)=csi2(2,:);
-        phaseC(m,:)=csi2(3,:);
+        phaseA(m,:)=phase_processing(csi2(1,:));
+        phaseB(m,:)=phase_processing(csi2(2,:));
+        phaseC(m,:)=phase_processing(csi2(3,:));
         
-        phase(1:30,m)= phaseA(m,:);
-        phase(31:60,m)= phaseB(m,:);
-        phase(61:90,m)=phaseC(m,:);
+        phase(m,1:30)= phaseA(m,:);
+        phase(m,31:60)= phaseB(m,:);
+        phase(m,61:90)=phaseC(m,:);
         
         rssiA(m,1)=csi_entry.rssi_a;    %rssi
         rssiB(m,1)=csi_entry.rssi_b;
         rssiC(m,1)=csi_entry.rssi_c;
         
-        rssi(1,m)=rssiA(m,1);
-        rssi(2,m)=rssiB(m,1);
-        rssi(3,m)=rssiC(m,1);
+        rssi(m,1)=rssiA(m,1);
+        rssi(m,2)=rssiB(m,1);
+        rssi(m,3)=rssiC(m,1);
+    end
+end
+
+function phase = phase_processing(phase)
+    for i=1:size(phase,1)
+        phase(i,:)=sanitize_phase(phase(i,:));
     end
 end
