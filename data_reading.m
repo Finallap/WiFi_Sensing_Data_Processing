@@ -1,5 +1,5 @@
 %clear
-csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_07_18\会议室\wave_zhou_2.dat');
+csi_trace=read_bf_file('G:\无源感知研究\数据采集\2019_07_18\会议室\clap_fang_1.dat');
 
 %tx=2;
 %rx=3;
@@ -139,8 +139,12 @@ gap=diff(timestamp_seq);
 interval = (csi_trace{L}.timestamp_low-csi_trace{1}.timestamp_low)/L;
 xq = (timestamp_start:interval:timestamp_end)';
 V = interp1(timestamp_seq, ampA, xq,'linear');
+
 hold on
+subplot(3,1,1);
 plot(ntx3_seq)
-plot(amplitudeA(:,27)+50)
-plot(V(:,27))
+subplot(3,1,2);
+plot(amplitudeA(:,:))
+subplot(3,1,3);
+plot(V(:,:))
 hold off
