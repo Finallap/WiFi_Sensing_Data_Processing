@@ -1,20 +1,22 @@
 %clear;
 %load('04_28_csi_dataset.mat');
-[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, 6, 0.7);%划分训练集和测试集
+
+%参数配置
+inputSize = size(csi_train{1,1},1);
+numHiddenUnits = 200;
+numClasses = size(categories(csi_label),1);
+networkType = 'SingleBiLSTM';
+maxEpochs = 150;
+miniBatchSize = 32;
+
+%划分训练集和测试集
+[x_train, y_train,  x_test, y_test] = split_train_test(csi_train, csi_label, numClasses, 0.7);
 
 %对训练集进行排序
 [x_train,y_train] = sequenceSort(x_train,y_train);
 
 %使用LSTMMaker函数建立训练网络
-train_data_size = size(x_train{1,1});
-inputSize = train_data_size(1);
-numHiddenUnits = 128;
-numClasses = 6;
-networkType = 'DoubleBiLSTM';
 layers = LSTMMaker(networkType, inputSize, numHiddenUnits, numClasses);
-
-maxEpochs = 50;
-miniBatchSize = 32;
 
 options = trainingOptions('adam', ...
     'ExecutionEnvironment','auto', ...
