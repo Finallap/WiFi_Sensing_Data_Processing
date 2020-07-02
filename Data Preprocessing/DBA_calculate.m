@@ -1,0 +1,12 @@
+addpath('/home/shengby/WiFi_Sensing_Data_Processing/Data Preprocessing');
+%lab_0718_3t3r_dba_result = DBA_calculation('/home/shengby/Experimental_result/conv1d/datasets/lab_0718_3t3r.mat');
+%save('lab_0718_3t3r_dba_result.mat','lab_0718_3t3r_dba_result');
+%lab_1911_3t3r_dba_result = DBA_calculation('/home/shengby/Experimental_result/conv1d/datasets/lab_1911_3t3r.mat');
+%save('lab_1911_3t3r_dba_result.mat','lab_1911_3t3r_dba_result');
+%meeting_0718_3t3r_dba_result = DBA_calculation('/home/shengby/Experimental_result/conv1d/datasets/meeting_0718_3t3r.mat');
+%save('meeting_0718_3t3r_dba_result.mat','meeting_0718_3t3r_dba_result');
+widar3_room1_20181109_1t3r3ap_dba_result = DBA_calculation('/home/shengby/Experimental_result/conv1d/datasets/widar3_room1_20181109_1t3r3ap.mat');
+save('widar3_room1_20181109_1t3r3ap_dba_result.mat','widar3_room1_20181109_1t3r3ap_dba_result');
+%widar3_room2_20181118_1t3r3ap_dba_result = DBA_calculation('/home/shengby/Experimental_result/conv1d/datasets/widar3_room2_20181118_1t3r3ap.mat');
+%save('widar3_room2_20181118_1t3r3ap_dba_result.mat','widar3_room2_20181118_1t3r3ap_dba_result');
+exit;
